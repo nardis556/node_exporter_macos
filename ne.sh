@@ -6,7 +6,9 @@ curl -s https://api.github.com/repos/prometheus/node_exporter/releases/latest \
 | tr -d \" \
 | wget -qi -
 
-tar xvfz node_exporter-*.*-darwin-amd64.tar.gz && mv node_exporter-*.*-darwin-amd64 node_exporter
+tar_file=$(ls node_exporter-*.darwin-amd64.tar.gz)
+
+tar xvfz "$tar_file" && mv node_exporter-*.*-darwin-amd64 node_exporter
 
 cat <<EOF | sudo tee /Library/LaunchDaemons/node_exporter.plist
 <?xml version="1.0" encoding="UTF-8"?>
@@ -25,4 +27,5 @@ cat <<EOF | sudo tee /Library/LaunchDaemons/node_exporter.plist
 </plist>
 EOF
 
+# Load the launchd job
 sudo launchctl load /Library/LaunchDaemons/node_exporter.plist
